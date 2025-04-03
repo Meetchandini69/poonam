@@ -37,7 +37,26 @@
 # Disable ETags to improve caching and reduce HTTP requests
 Header unset ETag
 FileETag None
-# Redirect www to non-www (or vice versa)
-RewriteEngine On
-RewriteCond %{HTTP_HOST} ^www\.poonamvarma\.com [NC]
-RewriteRule ^(.*)$ http://poonamvarma.com/$1 [L,R=301]
+# Serve WebP images if supported by the browser
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    RewriteCond %{REQUEST_FILENAME} \.(jpe?g|png)$
+    RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
+    RewriteRule ^(.*)\.(jpe?g|png)$ $1.webp [T=image/webp,L]
+</IfModule>
+# Enable HTTP/2 (if supported by your hosting environment)
+<IfModule http2_module>
+    Protocols h2 http/1.1
+</IfModule>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ensure the request is HTTPS (if not, redirect to HTTPS)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Redirect non-www to www
+    RewriteCond %{HTTP_HOST} ^poonamvarma\.com [NC]
+    RewriteRule ^ https://www.poonamvarma.com%{REQUEST_URI} [L,R=301]
+</IfModule>
