@@ -2147,6 +2147,9 @@ aside {
   border: 1px solid #222222;  
 }
 
+aside .section-title {
+  margin-bottom: 23px;
+}
 aside .list-style-area ul li a {
   background: transparent;
 }
@@ -2161,6 +2164,7 @@ aside .section-title h2:after {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  display: none;
 }
 
 
