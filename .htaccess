@@ -57,6 +57,6 @@ FileETag None
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # Redirect non-www to www
-    RewriteCond %{HTTP_HOST} ^poonamvarma\.com [NC]
-    RewriteRule ^ https://www.poonamvarma.com%{REQUEST_URI} [L,R=301]
+    RewriteCond %{HTTP_HOST} !^www.poonamvarma.com$ [NC]
+    RewriteRule ^(.*)$ https://www.poonamvarma.com/$1 [L,R=301]
 </IfModule>
